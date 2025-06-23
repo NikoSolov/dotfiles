@@ -1,0 +1,30 @@
+#!/bin/sh
+
+# Detect OS
+if [ -f /etc/os-release ]; then
+  . /etc/os-release
+  OS="$ID"
+else
+  OS="$(uname -s)"
+fi
+
+# Install packages depending on OS
+case "$OS" in
+  ubuntu|debian)
+    sudo apt update
+    sudo apt install -y zsh tmux git curl
+    ;;
+  arch|manjaro)
+    sudo pacman -Syu --noconfirm zsh tmux git curl
+    ;;
+  fedora)
+    sudo dnf install -y zsh tmux git curl
+    ;;
+  darwin)
+    brew install zsh tmux git curl
+    ;;
+  *)
+    echo "Unsupported OS: $OS"
+    ;;
+esac
+
